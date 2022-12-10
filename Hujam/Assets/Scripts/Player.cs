@@ -11,43 +11,106 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpPower;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
     [SerializeField] private Transform feet;
     [SerializeField] private LayerMask groundLayer;
 
-    private bool isJumping = false;
+
+    private Vector2 startPosition;
+
+    private bool isDying=false;
+
+    private float jumpTimer = 0;
 
     private void Start()
     {
         planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<Planet>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+
+        startPosition = transform.position;
     }
 
     private void Update()
     {
+        if (isDying)
+            return;
+
         horizontal = Input.GetAxis("Horizontal");
 
-        if(!IsGrounded())
-        rb.AddForce(planet.GetVelocity(this.transform));
+        anim.SetBool("walk", horizontal != 0);
 
-
-        if (Input.GetKeyDown(KeyCode.Space)&&IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
-            // StartCoroutine(Jump());
             rb.AddForce((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(0, jumpPower)));
-            Debug.Log("Jumped");
+            anim.SetBool("jump", true);
+            jumpTimer = 0;
         }
 
-        transform.rotation = Quaternion.Euler(planet.GetAngle(this.transform));
-        if(horizontal !=0)
-        transform.Translate(Vector2.right*(horizontal * moveSpeed));
+        jumpTimer += Time.deltaTime;
+
+        if (jumpTimer > 1.5f && IsGrounded())
+            anim.SetBool("jump", false);
+
+        if (horizontal != 0)
+        transform.localScale = new Vector2(Mathf.Sign(horizontal), transform.localScale.y);
     }
 
+    private void FixedUpdate()
+    {
+        if (isDying)
+            return;
 
+        if (!IsGrounded())
+            rb.AddForce(planet.GetVelocity(this.transform));
+
+
+     
+
+        transform.rotation = Quaternion.Euler(planet.GetAngle(this.transform));
+
+        transform.Translate(Vector2.right * (horizontal * moveSpeed));
+    }
     private bool IsGrounded()
     {
         RaycastHit2D check = Physics2D.Raycast(feet.position, ((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * Vector2.down)), 0.2f, groundLayer);
         return check;
+    }
+
+    public void Kill()
+    {
+        if(!isDying)
+        StartCoroutine(Die());
+    }
+
+    IEnumerator Die()
+    {
+        //dieAnimaton
+        isDying = true;
+        anim.SetBool("die", true);
+        yield return new WaitForSeconds(1f);
+        anim.SetBool("die", false);
+        anim.SetBool("rebirth", true);
+        transform.position = startPosition;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(1f);
+        anim.SetBool("rebirth", false);
+        isDying = false;
+    }
+
+    public void Fly()
+    {
+        StartCoroutine(FlyRoutine());
+    }
+
+    IEnumerator FlyRoutine()
+    {
+        isDying = true;
+        rb.AddForce((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(0, jumpPower*3)));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(Die());
     }
 
 

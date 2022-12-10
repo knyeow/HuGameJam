@@ -8,6 +8,8 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private string[] lines;
     [SerializeField] private float textSpeed;
 
+    public bool isFinished = false;
+
     private int index;
 
     private void Start()
@@ -61,7 +63,11 @@ public class Dialogue : MonoBehaviour
             StartCoroutine(typeLine());
         }
         else
+        {
+            isFinished = true;
             gameObject.SetActive(false);
+
+        }
 
 
     }
