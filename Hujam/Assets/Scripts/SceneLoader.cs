@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private Dialogue dialogue;
-
+    [SerializeField] private GameObject engineButton;
     private bool forOnce;
 
     private Animator anim;
@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
     {
         if (!forOnce &&dialogue.isFinished)
         {
-            anim.SetBool("boost", true);
+            engineButton.SetActive(true);
             forOnce = true;
         }
     }
@@ -42,4 +42,8 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+    public void StartEngine()
+    {
+        anim.SetBool("boost", true);
+    }
 }
