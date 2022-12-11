@@ -18,8 +18,10 @@ public class Ball : Traps
     }
 
 
-    private void Update()
+
+    private void FixedUpdate()
     {
-        rb.velocity = planet.GetVelocity(this.transform) +(Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(speed, 0));
+        transform.rotation = Quaternion.Euler(planet.GetAngle(this.transform));
+        transform.Translate(Vector2.right * new Vector2(speed, 0));
     }
 }

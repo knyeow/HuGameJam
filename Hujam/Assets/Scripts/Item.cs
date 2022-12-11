@@ -35,6 +35,11 @@ public class Item : MonoBehaviour
 
     }
 
+    public void EndGameStarter()
+    {
+        StartCoroutine(EndGame());
+    }
+
     IEnumerator EndGame()
     {
         referenceObject.SetActive(true);

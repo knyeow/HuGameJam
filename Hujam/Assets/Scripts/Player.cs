@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private Vector2 startPosition;
 
     public bool isDying=false;
+    public bool isSliding = false;
 
     private float jumpTimer = 0;
 
@@ -28,8 +29,11 @@ public class Player : MonoBehaviour
     private bool doubleJump = false;
     public bool canDoubleJump = false;
 
+    private GameObject mainCam;
 
-    
+    [SerializeField] private GameObject sliderPlayer;
+
+    [SerializeField] private Item item;
 
     private void Start()
     {
@@ -38,12 +42,14 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         bc = GetComponent<BoxCollider2D>();
 
+        mainCam = GameObject.FindGameObjectWithTag("MainCamera");
+
         startPosition = transform.position;
     }
 
     private void Update()
     {
-        if (isDying)
+        if (isDying||isSliding)
             return;
 
         horizontal = Input.GetAxis("Horizontal");
@@ -71,7 +77,7 @@ public class Player : MonoBehaviour
 
         jumpTimer += Time.deltaTime;
 
-        if (jumpTimer > 1.5f && IsGrounded())
+        if (jumpTimer > 1f && IsGrounded())
         {
             anim.SetBool("jump", false);
             doubleJump = false;
@@ -79,11 +85,13 @@ public class Player : MonoBehaviour
 
         if (horizontal != 0)
         transform.localScale = new Vector2(Mathf.Sign(horizontal), transform.localScale.y);
+
+
     }
 
     private void FixedUpdate()
     {
-        if (isDying)
+        if (isDying||isSliding)
             return;
 
         if (!IsGrounded())
@@ -104,7 +112,7 @@ public class Player : MonoBehaviour
 
     public void Kill()
     {
-        if(!isDying)
+        if(!isDying || !isSliding)
         StartCoroutine(Die());
     }
 
@@ -142,8 +150,19 @@ public class Player : MonoBehaviour
 
     IEnumerator DoubleJump()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.35f);
         doubleJump = true;
+    }
+
+
+    public void Slider()
+    {
+        StopAllCoroutines();
+        mainCam.GetComponent<CameraMovement>().enabled = false;
+        mainCam.GetComponent<SlideCamera>().enabled = true;
+        item.EndGameStarter();
+        transform.position = new Vector2(-75f, -75f);
+        sliderPlayer.SetActive(true);
     }
 
 
