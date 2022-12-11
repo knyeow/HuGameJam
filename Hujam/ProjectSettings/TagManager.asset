@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Planet
+  - PS
+  - Car
   layers:
   - Default
   - TransparentFX

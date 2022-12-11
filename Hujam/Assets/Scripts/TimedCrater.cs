@@ -34,7 +34,7 @@ public class TimedCrater : Crater
         craterTimer = 0;
         onAction = true;
         ps.Play();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.25f);
         bc.enabled = true;
         yield return new WaitForSeconds(3f);
         ps.Stop();

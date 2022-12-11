@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private BoxCollider2D bc;
 
     [SerializeField] private Transform feet;
     [SerializeField] private LayerMask groundLayer;
@@ -19,15 +20,23 @@ public class Player : MonoBehaviour
 
     private Vector2 startPosition;
 
-    private bool isDying=false;
+    public bool isDying=false;
 
     private float jumpTimer = 0;
+
+
+    private bool doubleJump = false;
+    public bool canDoubleJump = false;
+
+
+    
 
     private void Start()
     {
         planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<Planet>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        bc = GetComponent<BoxCollider2D>();
 
         startPosition = transform.position;
     }
@@ -41,17 +50,32 @@ public class Player : MonoBehaviour
 
         anim.SetBool("walk", horizontal != 0);
 
+        if (Input.GetKeyDown(KeyCode.Space) && doubleJump &&canDoubleJump)
+        {
+            rb.AddForce((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(0, jumpPower)));
+            anim.SetBool("jump", true);
+            jumpTimer = 0;
+            doubleJump = false;
+            Debug.Log("doublejumped");
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.AddForce((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(0, jumpPower)));
             anim.SetBool("jump", true);
             jumpTimer = 0;
+            StartCoroutine(DoubleJump());
         }
+        
 
         jumpTimer += Time.deltaTime;
 
         if (jumpTimer > 1.5f && IsGrounded())
+        {
             anim.SetBool("jump", false);
+            doubleJump = false;
+        }
 
         if (horizontal != 0)
         transform.localScale = new Vector2(Mathf.Sign(horizontal), transform.localScale.y);
@@ -88,6 +112,8 @@ public class Player : MonoBehaviour
     {
         //dieAnimaton
         isDying = true;
+        bc.enabled = false;
+        rb.velocity = Vector2.zero;
         anim.SetBool("die", true);
         yield return new WaitForSeconds(1f);
         anim.SetBool("die", false);
@@ -98,6 +124,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1f);
         anim.SetBool("rebirth", false);
         isDying = false;
+        bc.enabled = true;
     }
 
     public void Fly()
@@ -111,6 +138,12 @@ public class Player : MonoBehaviour
         rb.AddForce((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(0, jumpPower*3)));
         yield return new WaitForSeconds(3f);
         StartCoroutine(Die());
+    }
+
+    IEnumerator DoubleJump()
+    {
+        yield return new WaitForSeconds(0.5f);
+        doubleJump = true;
     }
 
 

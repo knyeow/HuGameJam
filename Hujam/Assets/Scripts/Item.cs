@@ -10,10 +10,12 @@ public class Item : MonoBehaviour
 
     private SpriteRenderer sr;
     private Camera mainCamera;
+    private Player player;
     private void Start()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         sr = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     private void Update()
@@ -36,6 +38,7 @@ public class Item : MonoBehaviour
     IEnumerator EndGame()
     {
         referenceObject.SetActive(true);
+        player.canDoubleJump = true;
         sr.enabled = false;
         yield return new WaitForSeconds(0.5f);
         while (mainCamera.orthographicSize < 20)
