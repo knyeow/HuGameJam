@@ -35,6 +35,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Item item;
 
+
+    [SerializeField] private AudioSource jumpSoundEffect;
+
     private void Start()
     {
         planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<Planet>();
@@ -63,6 +66,7 @@ public class Player : MonoBehaviour
             jumpTimer = 0;
             doubleJump = false;
             Debug.Log("doublejumped");
+            jumpSoundEffect.Play();
         }
 
 
@@ -71,6 +75,7 @@ public class Player : MonoBehaviour
             rb.AddForce((Vector2)(Quaternion.Euler(planet.GetAngle(this.transform)) * new Vector2(0, jumpPower)));
             anim.SetBool("jump", true);
             jumpTimer = 0;
+            jumpSoundEffect.Play();
             StartCoroutine(DoubleJump());
         }
         
@@ -127,7 +132,7 @@ public class Player : MonoBehaviour
         anim.SetBool("die", false);
         anim.SetBool("rebirth", true);
         transform.position = startPosition;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
+        transform.rotation = Quaternion.Euler(planet.GetAngle(this.transform));
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(1f);
         anim.SetBool("rebirth", false);
