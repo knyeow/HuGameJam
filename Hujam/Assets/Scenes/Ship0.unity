@@ -191,6 +191,90 @@ Transform:
   m_Father: {fileID: 1992979017}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &267917946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 267917947}
+  - component: {fileID: 267917948}
+  m_Layer: 0
+  m_Name: ShipBody (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &267917947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267917946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.41, y: -0.809, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1361415009}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &267917948
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267917946}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -1025741465
+  m_SortingLayer: 2
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a82507630c7726f4fbbeff2b53e2f566, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 19.2, y: 10.8}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &611329159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1257,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 18.42
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5677,6 +5761,7 @@ Transform:
   - {fileID: 611329160}
   - {fileID: 1705919508}
   - {fileID: 1992979017}
+  - {fileID: 267917947}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5787,7 +5872,7 @@ SpriteRenderer:
   m_SortingLayerID: -1025741465
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b042985a6e241cb429336d7da90bd916, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f819cc33db81aaf4abde0dd63245fa97, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5827,7 +5912,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 09205cf106903a24e851dbb07f2f1f09, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.336
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6435,13 +6520,33 @@ PrefabInstance:
       propertyPath: textSpeed
       value: 0.075
       objectReference: {fileID: 0}
+    - target: {fileID: 7298883779757394863, guid: b67644deff58921408c22824983ae48d, type: 3}
+      propertyPath: lines.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7298883779757394863, guid: b67644deff58921408c22824983ae48d, type: 3}
+      propertyPath: lines.Array.data[0]
+      value: "Demek Uyanm\u0131\u015Fs\u0131n."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7298883779757394863, guid: b67644deff58921408c22824983ae48d, type: 3}
+      propertyPath: lines.Array.data[1]
+      value: "Ay'\u0131n y\xFCzeyindeki bir \xE7antadan kuvvetli  sinyal al\u0131yorum."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7298883779757394863, guid: b67644deff58921408c22824983ae48d, type: 3}
+      propertyPath: lines.Array.data[2]
+      value: "Mars'taki ana g\xF6revimizde b\xF6yle bir \xE7anta i\u015Fine yarayabilir."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7298883779757394863, guid: b67644deff58921408c22824983ae48d, type: 3}
+      propertyPath: lines.Array.data[3]
+      value: "Haz\u0131r oldu\u011Funda s\xF6yle gidelim."
+      objectReference: {fileID: 0}
     - target: {fileID: 7298883779768592478, guid: b67644deff58921408c22824983ae48d, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7298883779768592478, guid: b67644deff58921408c22824983ae48d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.57
+      value: 3.007
       objectReference: {fileID: 0}
     - target: {fileID: 7298883779768592478, guid: b67644deff58921408c22824983ae48d, type: 3}
       propertyPath: m_LocalPosition.y

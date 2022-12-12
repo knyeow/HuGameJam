@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     private Vector2 startPosition;
 
     public bool isDying=false;
-    public bool isSliding = false;
 
     private float jumpTimer = 0;
 
@@ -29,14 +28,10 @@ public class Player : MonoBehaviour
     private bool doubleJump = false;
     public bool canDoubleJump = false;
 
-    private GameObject mainCam;
-
-    [SerializeField] private GameObject sliderPlayer;
-
-    [SerializeField] private Item item;
 
 
     [SerializeField] private AudioSource jumpSoundEffect;
+    [SerializeField] private AudioSource dieSoundEffect;
 
     private void Start()
     {
@@ -45,14 +40,13 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         bc = GetComponent<BoxCollider2D>();
 
-        mainCam = GameObject.FindGameObjectWithTag("MainCamera");
 
         startPosition = transform.position;
     }
 
     private void Update()
     {
-        if (isDying||isSliding)
+        if (isDying)
             return;
 
         horizontal = Input.GetAxis("Horizontal");
@@ -96,7 +90,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDying||isSliding)
+        if (isDying)
             return;
 
         if (!IsGrounded())
@@ -117,7 +111,7 @@ public class Player : MonoBehaviour
 
     public void Kill()
     {
-        if(!isDying || !isSliding)
+        if(!isDying)
         StartCoroutine(Die());
     }
 
@@ -128,10 +122,12 @@ public class Player : MonoBehaviour
         bc.enabled = false;
         rb.velocity = Vector2.zero;
         anim.SetBool("die", true);
+        dieSoundEffect.Play();
         yield return new WaitForSeconds(1f);
         anim.SetBool("die", false);
         anim.SetBool("rebirth", true);
         transform.position = startPosition;
+        transform.position += new Vector3(0, 0, 5);
         transform.rotation = Quaternion.Euler(planet.GetAngle(this.transform));
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(1f);
@@ -157,17 +153,6 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.35f);
         doubleJump = true;
-    }
-
-
-    public void Slider()
-    {
-        StopAllCoroutines();
-        mainCam.GetComponent<CameraMovement>().enabled = false;
-        mainCam.GetComponent<SlideCamera>().enabled = true;
-        item.EndGameStarter();
-        transform.position = new Vector2(-75f, -75f);
-        sliderPlayer.SetActive(true);
     }
 
 

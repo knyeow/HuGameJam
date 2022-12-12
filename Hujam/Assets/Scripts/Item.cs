@@ -8,13 +8,16 @@ public class Item : MonoBehaviour
 
     [SerializeField] private GameObject returnButton;
 
+    [SerializeField] private AudioSource collectSound;
     private SpriteRenderer sr;
+    private BoxCollider2D bc;
     private Camera mainCamera;
     private Player player;
     private void Start()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         sr = GetComponent<SpriteRenderer>();
+        bc = GetComponent<BoxCollider2D>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
@@ -45,6 +48,8 @@ public class Item : MonoBehaviour
         referenceObject.SetActive(true);
         player.canDoubleJump = true;
         sr.enabled = false;
+        collectSound.Play();
+        bc.enabled = false;
         yield return new WaitForSeconds(0.5f);
         while (mainCamera.orthographicSize < 20)
         {
